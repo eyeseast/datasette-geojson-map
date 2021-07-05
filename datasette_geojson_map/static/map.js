@@ -18,7 +18,7 @@ async function render() {
 	parent.insertBefore(container, parent.firstElementChild);
 
 	const map = createMap(L, container);
-	const layer = L.geoJSON(geojson).addTo(map);
+	const layer = L.geoJSON(geojson).addTo(map).bindPopup(popup);
 	const bounds = layer.getBounds();
 
 	map.fitBounds(bounds);
@@ -33,6 +33,30 @@ function createMap(L, container) {
 	}).addTo(map);
 
 	return map;
+}
+
+function popup(layer) {
+	const { properties } = layer.feature;
+	const items = Object.entries(properties).map(
+		([key, value]) => `
+  <dt>${key}</dt>
+  <dd class="${typeof value}">${format(value)}</dd>`
+	);
+
+	return `<dl class="properties">${items.join("")}</dl>`;
+}
+
+function format(value) {
+	switch (typeof value) {
+		case "number":
+			return value.toLocaleString();
+
+		case "string":
+			return value;
+
+		default:
+			return String(value);
+	}
 }
 
 window.addEventListener("load", render);

@@ -3,3 +3,21 @@
 	width: 100%;
 	margin-bottom: 1.5em;
 }
+
+.leaflet-popup-content .properties {
+	display: flex;
+	flex-wrap: wrap;
+	min-width: 200px;
+}
+
+.leaflet-popup-content .properties dt {
+	font-weight: bold;
+	flex: 0 0 auto;
+	width: 33%;
+}
+
+.leaflet-popup-content .properties dd {
+	flex: 0 0 auto;
+	width: 67%;
+	text-align: right;
+}
