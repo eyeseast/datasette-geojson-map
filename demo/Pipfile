@@ -1,0 +1,13 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+datasette-geojson-map = {editable = true, path = "./.."}
+geojson-to-sqlite = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.9"

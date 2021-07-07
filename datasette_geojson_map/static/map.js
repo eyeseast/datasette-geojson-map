@@ -22,15 +22,15 @@ async function render() {
 	const bounds = layer.getBounds();
 
 	map.fitBounds(bounds);
+
+	// make debugging easier
+	window.map = map;
 }
 
 function createMap(L, container) {
 	const map = L.map(container);
 
-	L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-		attribution:
-			'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-	}).addTo(map);
+	L.tileLayer(window.TILE_LAYER, window.TILE_LAYER_OPTIONS).addTo(map);
 
 	return map;
 }

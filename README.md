@@ -60,7 +60,3 @@ Now install the dependencies and test dependencies:
 To run the tests:
 
     pytest
-
-```
-
-```
