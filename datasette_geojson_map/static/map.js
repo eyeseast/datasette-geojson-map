@@ -6,7 +6,7 @@ async function render() {
 	console.debug("Rendering GeoJSON map");
 	// window.datasette.leaflet.JAVASCRIPT_URL
 	const L = await import(window.datasette.leaflet.JAVASCRIPT_URL);
-	const geojson = await fetch(location.pathname + ".geojson").then(r => r.json());
+	const geojson = await fetch(geojsonURL(window.location)).then(r => r.json());
 
 	const parent = document.querySelector(".table-wrapper");
 	const container = document.createElement("DIV");
@@ -33,6 +33,12 @@ function createMap(L, container) {
 	L.tileLayer(window.TILE_LAYER, window.TILE_LAYER_OPTIONS).addTo(map);
 
 	return map;
+}
+
+function geojsonURL(location) {
+	const url = new URL(location);
+	url.pathname = url.pathname + ".geojson";
+	return url;
 }
 
 function popup(layer) {
