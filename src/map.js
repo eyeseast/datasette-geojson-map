@@ -8,7 +8,7 @@ async function render() {
 	const L = await import(window.datasette.leaflet.JAVASCRIPT_URL);
 
 	// simplestyle
-	await import('./leaflet-simplestyle.min.js');
+	await import("leaflet-simplestyle");
 
 	const geojson = await fetch(geojsonURL(window.location)).then(r => r.json());
 
@@ -72,4 +72,3 @@ function format(value) {
 }
 
 window.addEventListener("load", render);
-//# sourceMappingURL=map.js.map
