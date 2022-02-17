@@ -68,6 +68,34 @@ Options:
 - `tile_layer`: Use a URL template that can be passed to a [Leaflet Tilelayer](https://leafletjs.com/reference-1.7.1.html#tilelayer)
 - `tile_layer_options`: All options will be passed to the tile layer. See [Leaflet documentation](https://leafletjs.com/reference-1.7.1.html#tilelayer) for more on possible values here.
 
+## Styling map features
+
+Map features can be styled using the [simplestyle-spec](https://github.com/mapbox/simplestyle-spec). This requires setting specific fields on returned rows. Here's an example:
+
+```sql
+SELECT Name, geometry, "#ff0000" as fill, "#0000ff" as stroke, 0.2 as stroke-width,  from neighborhoods
+```
+
+That will render a neighborhood map where each polygon is filled in red, outlined in blue and lines are 0.2 pixels wide.
+
+A more useful approach would use the `CASE` statement to color features based on data:
+
+```sql
+SELECT
+  Name,
+  geometry,
+  CASE
+    Name
+    WHEN "Roslindale" THEN "#ff0000"
+    WHEN "Dorchester" THEN "#0000ff"
+    ELSE "#dddddd"
+  END fill
+FROM
+  neighborhoods
+```
+
+This will fill Roslindale in red, Dorchester in blue and all other neighborhoods in gray.
+
 ## Development
 
 To set up this plugin locally, first checkout the code. Then create a new virtual environment:

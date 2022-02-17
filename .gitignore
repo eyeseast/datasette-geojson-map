@@ -11,4 +11,7 @@ build/
 dist/
 .DS_Store
 .vscode
+Pipfile
+!demo/Pipfile
 *.db
+node_modules

@@ -1,0 +1,27 @@
+{
+  "name": "datasette-geojson-map",
+  "version": "0.4.0",
+  "description": "Render a map for any query with a geometry column",
+  "main": "static/map.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "build": "rollup -c",
+    "test": "pipenv run pytest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eyeseast/datasette-geojson-map.git"
+  },
+  "author": "Chris Amico",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/eyeseast/datasette-geojson-map/issues"
+  },
+  "homepage": "https://github.com/eyeseast/datasette-geojson-map#readme",
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "^13.1.3",
+    "leaflet-simplestyle": "^1.2.4"
+  }
+}

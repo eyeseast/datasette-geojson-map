@@ -11,3 +11,21 @@ plugins:
       minZoom: 1
       maxZoom: 16
       ext: jpg
+
+databases:
+  boston:
+    queries:
+      color_by_name:
+        title: Color by name
+        sql: |
+          SELECT
+            Name,
+            geometry,
+            CASE
+              Name
+              WHEN "Roslindale" THEN "#ff0000"
+              WHEN "Dorchester" THEN "#0000ff"
+              ELSE "#dddddd"
+            END fill
+          FROM
+            neighborhoods
