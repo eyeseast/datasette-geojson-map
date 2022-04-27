@@ -12,6 +12,8 @@ dist/
 .DS_Store
 .vscode
 Pipfile
+Pipfile.lock
 !demo/Pipfile
+!demo/Pipfile.lock
 *.db
 node_modules
