@@ -4,10 +4,12 @@ Render a map based on a query or table view by fetching its GeoJSON representati
 
 async function render() {
 	console.debug("Rendering GeoJSON map");
-	// window.datasette.leaflet.JAVASCRIPT_URL
-	const L = await import(window.datasette.leaflet.JAVASCRIPT_URL);
+	// load dependencies
+	await Promise.all([
+		loadCSS(window.datasette.leaflet.CSS_URL),
+		import(window.datasette.leaflet.JAVASCRIPT_URL),
+	]);
 
-	// simplestyle
 	await import('./leaflet-simplestyle.min.js');
 
 	const geojson = await fetch(geojsonURL(window.location)).then(r => r.json());
@@ -21,8 +23,11 @@ async function render() {
 
 	parent.insertBefore(container, parent.firstElementChild);
 
-	const map = createMap(L, container);
-	const layer = L.geoJSON(geojson, { useSimpleStyle: true, useMakiMarkers: true })
+	const map = createMap(window.L, container);
+	const layer = L.geoJSON(geojson, {
+		useSimpleStyle: window.TILE_LAYER_OPTIONS.use_simplestyle,
+		useMakiMarkers: window.TILE_LAYER_OPTIONS.use_maki_icons,
+	})
 		.addTo(map)
 		.bindPopup(popup);
 	const bounds = layer.getBounds();
@@ -31,6 +36,19 @@ async function render() {
 
 	// make debugging easier
 	window.map = map;
+}
+
+function loadCSS(href) {
+	const link = document.createElement("link");
+
+	Object.assign(link, { href, rel: "stylesheet" });
+
+	document.head.appendChild(link);
+
+	return new Promise((resolve, reject) => {
+		link.addEventListener("load", resolve);
+		link.addEventListener("error", reject);
+	});
 }
 
 function createMap(L, container) {

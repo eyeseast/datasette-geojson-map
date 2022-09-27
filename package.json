@@ -8,7 +8,8 @@
   },
   "scripts": {
     "build": "rollup -c",
-    "test": "pipenv run pytest"
+    "test": "pipenv run pytest",
+    "watch": "NODE_ENV=development rollup -c -w"
   },
   "repository": {
     "type": "git",

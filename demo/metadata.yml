@@ -3,9 +3,9 @@ plugins:
     tile_layer: https://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}.{ext}
     tile_layer_options:
       attribution: >-
-        Map tiles by <a href="http://stamen.com">Stamen Design</a>, 
-        under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. 
-        Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, 
+        Map tiles by <a href="http://stamen.com">Stamen Design</a>,
+        under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>.
+        Data by <a href="http://openstreetmap.org">OpenStreetMap</a>,
         under <a href="http://www.openstreetmap.org/copyright">ODbL</a>.
       subdomains: abcd
       minZoom: 1
@@ -29,3 +29,11 @@ databases:
             END fill
           FROM
             neighborhoods
+
+  places:
+    plugins:
+      datasette-geojson-map:
+        # tile_layer: http://localhost:8080/styles/basic-preview/{z}/{x}/{y}.png
+        tile_layer_options:
+          use_maki_icons: false
+          use_simplestyle: false
