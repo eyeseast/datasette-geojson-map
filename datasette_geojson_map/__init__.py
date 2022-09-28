@@ -76,16 +76,16 @@ def filters_from_request(request, database, table, datasette):
         if not geometry_column:
             return None
 
-        where_clauses = [
-            f"Intersects(BuildMbr(:x1, :y1, :x2, :y2), [{geometry_column}])"
-        ]
+        # write this once and insert it
+        mbr = "BuildMbr(cast(:x1 as numeric), cast(:y1 as numeric), cast(:x2 as numeric), cast(:y2 as numeric))"
+        where_clauses = [f"Intersects({mbr}, [{geometry_column}])"]
 
         if spatial_index_enabled:
             spatial_lookup = textwrap.dedent(
                 f"""
             [{table}].rowid in
             (select rowid from SpatialIndex where f_table_name = :table
-            and search_frame = BuildMbr(:x1, :y1, :x2, :y2))"""
+            and search_frame = {mbr})"""
             ).strip()
 
             where_clauses.append(spatial_lookup)

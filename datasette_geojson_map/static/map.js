@@ -4,6 +4,7 @@ Render a map based on a query or table view by fetching its GeoJSON representati
 
 async function render() {
 	console.debug("Rendering GeoJSON map");
+
 	// load dependencies
 	await Promise.all([
 		loadCSS(window.datasette.leaflet.CSS_URL),
@@ -30,9 +31,11 @@ async function render() {
 	})
 		.addTo(map)
 		.bindPopup(popup);
-	const bounds = layer.getBounds();
+
+	const bounds = getBounds(layer, window.L);
 
 	map.fitBounds(bounds);
+	map.on("moveend", updateBounds);
 
 	// make debugging easier
 	window.map = map;
@@ -88,6 +91,29 @@ function format(value) {
 			return String(value);
 	}
 }
+/**
+ * Get bounds for the GeoJSON layer,
+ * unless we have a _bbox or other params set
+ *
+ * @param {*} layer
+ */
+function getBounds(layer, L) {
+	const qs = new URL(window.location).searchParams;
+
+	if (qs.has("_bbox")) {
+		const [x1, y1, x2, y2] = qs.get("_bbox").split(",").map(Number);
+		return L.latLngBounds([y1, x1], [y2, x2]);
+	}
+
+	if (["x1", "y1", "x2", "y2"].every(f => qs.has(f))) {
+		const [x1, y1, x2, y2] = ["x1", "y1", "x2", "y2"].map(f => qs.get(f)).map(Number);
+		return L.latLngBounds([y1, x1], [y2, x2]);
+	}
+
+	return layer.getBounds();
+}
+
+function updateBounds(e) {}
 
 window.addEventListener("load", render);
 //# sourceMappingURL=map.js.map
