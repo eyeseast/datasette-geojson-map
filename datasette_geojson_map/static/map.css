@@ -21,3 +21,11 @@
 	width: 67%;
 	text-align: right;
 }
+
+.bbox label {
+	width: inherit;
+}
+
+.bbox input[name="_bbox"] {
+	width: 50ch;
+}

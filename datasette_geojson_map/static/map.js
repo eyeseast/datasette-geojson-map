@@ -34,8 +34,11 @@ async function render() {
 
 	const bounds = getBounds(layer, window.L);
 
-	map.fitBounds(bounds);
-	map.on("moveend", updateBounds);
+	// these will only render if the right querystring is present
+	renderBBoxInput();
+
+	// set bounds and update input
+	map.fitBounds(bounds).on("moveend", updateBounds).fire("moveend");
 
 	// make debugging easier
 	window.map = map;
@@ -91,11 +94,30 @@ function format(value) {
 			return String(value);
 	}
 }
+
+function renderBBoxInput() {
+	new URL(window.location).searchParams;
+
+	const form = document.querySelector("form.filters");
+	if (!form) return; // this only appears on the table page
+
+	const filters = form.querySelectorAll(".filter-row");
+
+	const html = `<div class="filter-row bbox">
+	<label>Map bounds <input type="text" name="_bbox" class="filter-value" /></label>
+	<a href="${unboxed()}" aria-label="Remove this filter" style="text-decoration: none;">✖</a>
+</div>`;
+
+	const doc = new DOMParser().parseFromString(html, "text/html");
+
+	form.insertBefore(doc.querySelector("div"), filters[filters.length - 1]);
+}
+
 /**
  * Get bounds for the GeoJSON layer,
  * unless we have a _bbox or other params set
  *
- * @param {*} layer
+ * @param {L.Layer} layer
  */
 function getBounds(layer, L) {
 	const qs = new URL(window.location).searchParams;
@@ -113,7 +135,41 @@ function getBounds(layer, L) {
 	return layer.getBounds();
 }
 
-function updateBounds(e) {}
+function updateBounds(e) {
+	const map = e.target;
+	const bounds = map.getBounds();
+
+	let input;
+
+	// table view, single input
+	if ((input = document.querySelector("[name=_bbox]"))) {
+		input.value = bounds.toBBoxString();
+	}
+
+	// query view, four inputs
+	if (
+		(input = document.querySelectorAll("[name=x1],[name=y1],[name=x2],[name=y2]")) &&
+		input.length
+	) {
+		bounds
+			.toBBoxString()
+			.split(",")
+			.forEach((d, i) => {
+				input[i].value = d;
+			});
+	}
+}
+
+/*
+Get a version of this URL without a BBOX search
+ */
+function unboxed() {
+	const url = new URL(window.location);
+
+	["_bbox", "x1", "y1", "x2", "y2"].forEach(key => url.searchParams.delete(key));
+
+	return url;
+}
 
 window.addEventListener("load", render);
 //# sourceMappingURL=map.js.map
