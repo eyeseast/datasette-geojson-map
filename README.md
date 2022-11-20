@@ -37,7 +37,7 @@ open http://localhost:8001/boston/neighborhoods
 
 You should see a map centered on Boston with each neighborhood outlined. Clicking a boundary will bring up a popup with details on that feature.
 
-![Boston neighbhorhoods map](img/boston-neighborhoods-map.png)
+![Boston neighbhorhoods map](https://raw.githubusercontent.com/eyeseast/datasette-geojson-map/main/img/boston-neighborhoods-map.png)
 
 This plugin relies on (and will install) [datasette-geojson](https://github.com/eyeseast/datasette-geojson). Any query that includes a `geometry` column will produce a map of the results. This also includes single row views.
 
