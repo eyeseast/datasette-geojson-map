@@ -22,7 +22,7 @@ async function render() {
 	parent.insertBefore(container, parent.firstElementChild);
 
 	const map = createMap(L, container);
-	const layer = L.geoJSON(geojson, { useSimpleStyle: true, useMakiMarkers: true })
+	const layer = L.geoJSON(geojson, { useSimpleStyle: true, useMakiMarkers: false })
 		.addTo(map)
 		.bindPopup(popup);
 	const bounds = layer.getBounds();
